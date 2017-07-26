@@ -911,7 +911,7 @@ class CompactCalendarController {
     }
 
     private void drawDayCircleIndicator(int indicatorStyle, Canvas canvas, float x, float y, int color) {
-        drawDayCircleIndicator(indicatorStyle, canvas, x, y, color, 1);
+        //drawDayCircleIndicator(indicatorStyle, canvas, x, y, color, .6f);
     }
 
     private void drawDayCircleIndicator(int indicatorStyle, Canvas canvas, float x, float y, int color, float circleScale) {
