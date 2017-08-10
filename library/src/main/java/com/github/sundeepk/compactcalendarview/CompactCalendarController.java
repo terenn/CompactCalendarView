@@ -445,6 +445,30 @@ class CompactCalendarController {
         drawScrollableCalender(canvas);
     }
 
+    void onLongPress(MotionEvent e) {
+        // Don't handle long press when calendar is scrolling and is not stationary
+        if (isScrolling()) {
+            return;
+        }
+
+        int dayColumn = Math.round((paddingLeft + e.getX() - paddingWidth - paddingRight) / widthPerDay);
+        int dayRow = Math.round((e.getY() - paddingHeight) / heightPerDay);
+
+        setCalenderToFirstDayOfMonth(calendarWithFirstDayOfMonth, currentDate, -monthsScrolledSoFar, 0);
+
+        int firstDayOfMonth = getDayOfWeek(calendarWithFirstDayOfMonth);
+
+        int dayOfMonth = ((dayRow - 1) * 7 + dayColumn) - firstDayOfMonth;
+
+        if (dayOfMonth < calendarWithFirstDayOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH)
+                && dayOfMonth >= 0) {
+            calendarWithFirstDayOfMonth.add(Calendar.DATE, dayOfMonth);
+
+            currentCalender.setTimeInMillis(calendarWithFirstDayOfMonth.getTimeInMillis());
+            performOnDayLongClickCallback(currentCalender.getTime());
+        }
+    }
+
     void onSingleTapUp(MotionEvent e) {
         // Don't handle single tap when calendar is scrolling and is not stationary
         if (isScrolling()) {
@@ -480,6 +504,12 @@ class CompactCalendarController {
     private void performOnDayClickCallback(Date date) {
         if (listener != null) {
             listener.onDayClick(date);
+        }
+    }
+
+    private void performOnDayLongClickCallback(Date date) {
+        if (listener != null) {
+            listener.onDayLongClick(date);
         }
     }
 

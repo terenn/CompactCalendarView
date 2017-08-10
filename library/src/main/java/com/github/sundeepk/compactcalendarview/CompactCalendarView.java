@@ -34,6 +34,7 @@ public class CompactCalendarView extends View {
 
     public interface CompactCalendarViewListener {
         public void onDayClick(Date dateClicked);
+        public void onDayLongClick(Date dateClicked);
         public void onMonthScroll(Date firstDayOfNewMonth);
     }
 
@@ -45,6 +46,8 @@ public class CompactCalendarView extends View {
     private final GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public void onLongPress(MotionEvent e) {
+            compactCalendarController.onLongPress(e);
+            invalidate();
         }
 
         @Override
